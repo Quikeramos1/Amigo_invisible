@@ -9,12 +9,10 @@ if empezar == "n":
     print("Ok, vuelve cuando quieras introducir lo datos")
 elif empezar == "s":
 
-    personas = pedir_datos()
+    personas = sorteo()
+    
+    
 
-
-
-
-print(personas)
 
 
 
