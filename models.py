@@ -60,7 +60,7 @@ def pedir_datos():
       
 
 #*****Hay que revisar la función sorteo porque no lo hace correcto
-#idea: Crear dos diccionarios 1-eres regalador 2 eres regalado
+#actualmetne se repiten nombres en los sorteos
 def sorteo():
     personas = pedir_datos()
     lista_nombres = list(personas.keys())
