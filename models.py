@@ -39,45 +39,59 @@ def enviar_correo(destinatario, asunto, cuerpo):
 def pedir_datos():
     personas = {}
     nombre = "a"
+
     while nombre != "":
         nombre = input("Nombre: ")
         if nombre =="" and len(personas) %2 != 0:
             print("Para poder realizar el sorteo debe haber un numero Par de personas")
-            print("Puedes excribir la palabra ' s ' para salir de la aplicación") 
             nombre = input("Nombre: ")
             
-        elif nombre =="" and len(personas) %2 == 0:    
-            break  
+        elif nombre =="" and (len(personas)) %2 == 0:    
+            break
+
+        
         mail = input("Email: ")
-        if nombre != "" or mail != "":
-            personas[nombre] = mail
-        else:
-            print("No has introducido todos los datos\nSaliendo de la App...")
-            exit    
+        while mail == "":
+            print("Debe introducir un email")  
+            mail = input("Email: ")
+        while mail in personas.values():
+            print("Este email ya se ha registrado, por favor usa otro.")
+            mail = input("Email: ")
+
+        personas[nombre] = mail
+        print(len(personas))
+    
+             
        
     return personas
         
       
-
-#*****Hay que revisar la función sorteo porque no lo hace correcto
-#actualmetne se repiten nombres en los sorteos
 def sorteo():
     personas = pedir_datos()
-    lista_nombres = list(personas.keys())
-    random.shuffle(lista_nombres)
+    
+    lista_mails = list(personas.values())
+    lista_mails2 =sorted(lista_mails)   
+    regalas = {}
     parejas = {}
 
-    for i in personas.keys():
-        for nombre in lista_nombres:
-            if i not in nombre:
-                parejas[i]=nombre
-                break
-    
+    for i in lista_mails:
+        for a in lista_mails2:
+            if a != i and a not in regalas.values():
+                regalas[i] = a
+                        
+               
 
-    for persona, amigo_invisible in parejas.items():
+    for personamail, amigo_invisiblemail in regalas.items():
+        
+        for clave, valor in personas.items():
+            if personamail == valor:
+                persona = clave
+            elif amigo_invisiblemail == valor:
+                amigo_invisible = clave
+        parejas[persona]=amigo_invisible    
         print(f"{persona} le regalará a {amigo_invisible}")
-
-    enviar_parejas(personas, parejas)
+    print(parejas)
+    enviar_parejas(personas,parejas )
     return personas, parejas
 
 
