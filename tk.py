@@ -2,7 +2,7 @@ from tkinter import *
 import tkinter as tk
 from tkinter import ttk,font
 from dotenv import load_dotenv
-import smtplib,os,sys
+import smtplib,os
 from email.mime.text import MIMEText
 from email.mime.multipart import MIMEMultipart
 
@@ -11,11 +11,12 @@ load_dotenv()
 
 
 
-class Aplicacion():
-    def __init__(self):
-
-        self.root = Tk()
-        self.root.title("Sorteo Amigo Invisible")
+class Aplicacion(Toplevel):
+    def __init__(self,master=None):
+        super().__init__(master)
+        
+              
+        self.title("Sorteo Amigo Invisible")
         fuente=font.Font(weight="bold")
 
         #variables de entrada
@@ -24,32 +25,33 @@ class Aplicacion():
 
         #configuracion ventana principal
 
-        ttk.Label(self.root, text= "Bienvenid@ a sorteo de amigo invisible",font=fuente).pack(pady=10)
-        self.width = int(self.root.winfo_screenwidth()//2)
-        self.height = int(self.root.winfo_screenheight()//1)
-        self.pwidth = round(self.root.winfo_screenwidth() // 2 - self.width // 2)
-        self.pheight = round(self.root.winfo_screenheight() // 2 - self.height // 2)
-        self.root.geometry("{}x{}+{}+{}".format(self.width, self.height, self.pwidth, self.pheight))
+        ttk.Label(self, text= "Bienvenid@ a sorteo de amigo invisible",font=fuente).pack(pady=10)
+        self.width = int(self.winfo_screenwidth()//2)
+        self.height = int(self.winfo_screenheight()//1)
+        self.pwidth = round(self.winfo_screenwidth() // 2 - self.width // 2)
+        self.pheight = round(self.winfo_screenheight() // 2 - self.height // 2)
+        self.geometry("{}x{}+{}+{}".format(self.width, self.height, self.pwidth, self.pheight))
+        self.iconbitmap("/media/icon.png")
 
         #widgets
 
-        self.etiqueta_nombre=ttk.Label(self.root, text= "Introduce el nombre del participante:").pack(pady=20)
-        self.entrada_nombre=ttk.Entry(self.root, textvariable=self.nombre).pack()
+        self.etiqueta_nombre=ttk.Label(self, text= "Introduce el nombre del participante:").pack(pady=20)
+        self.entrada_nombre=ttk.Entry(self, textvariable=self.nombre).pack()
 
-        self.etiqueta_mail=ttk.Label(self.root, text= "Introduce el email del participante:").pack(pady=20)
-        self.entrada_mail=ttk.Entry(self.root, textvariable= self.email).pack()
+        self.etiqueta_mail=ttk.Label(self, text= "Introduce el email del participante:").pack(pady=20)
+        self.entrada_mail=ttk.Entry(self, textvariable= self.email).pack()
 
-        ttk.Button(self.root, text="Añadir otro amigo", command=self.pedir_datos).pack(pady=20)
+        ttk.Button(self, text="Añadir otro amigo", command=self.pedir_datos).pack(pady=20)
 
-        ttk.Button(self.root, text="Realizar Sorteo", command=self.sorteo).pack(pady=20)
+        ttk.Button(self, text="Realizar Sorteo", command=self.sorteo).pack(pady=20)
 
-        ttk.Button(self.root, text='Salir', command=quit).pack(pady=20)
+        ttk.Button(self, text='Salir', command=quit).pack(pady=20)
 
-        self.ventana=tk.Text(self.root)
+        self.ventana=tk.Text(self)
         self.ventana.pack()
         
         
-        self.root.mainloop()
+        self.mainloop()
 
     def log(self, message):
         self.ventana.insert(tk.END, f"{message}\n")
@@ -160,12 +162,52 @@ class Aplicacion():
             self.enviar_correo(self.destinatario, asunto, cuerpo)
 
 
+
+def mostrar_aplicacion(master):
+     app = Aplicacion(master=master)
+
+def mostrar_ventana_splash():
+    splash_root = Tk()
+    splash_root.overrideredirect(True)
+
+    image_path = "media/splash.png"
+    image = PhotoImage(file=image_path)
+    img_label = Label(splash_root, image=image)
+    img_label.pack()
+
+    nombre_text = "®Enrique Ramos Fuster\n2024\nAplicación diseñada para\nsu libre uso y distribución."
+    nombre_label = Label(splash_root, text=nombre_text)
+    
+
+    
+
+    width = int(splash_root.winfo_screenwidth()//2)
+    height = int(splash_root.winfo_screenheight()//1)
+    pwidth = round(splash_root.winfo_screenwidth() // 2 - width // 2)
+    pheight = round(splash_root.winfo_screenheight() // 2 - height // 2)
+    splash_root.geometry("{}x{}+{}+{}".format(width, height, pwidth, pheight))
+
+    nombre_label_x = (width - nombre_label.winfo_reqwidth()) // 2
+    nombre_label_y = (height - nombre_label.winfo_reqheight()) //2  
+
+    nombre_label.place(x=nombre_label_x, y=nombre_label_y)
+    ttk.Label(splash_root, text="¡Bienvenido!").pack(pady=10)
+    ttk.Button(splash_root, text="Abrir Aplicación", command=lambda: mostrar_aplicacion(splash_root)).place(x=nombre_label_x +20, y=(nombre_label_y+80))
+
+    
+    
+    splash_root.mainloop()
+
+
+
+     
+
+
+
    
 
-def main():
-    mi_app = Aplicacion()
-    return 0
+
 
 if __name__ == "__main__":
-    main()
+   mostrar_ventana_splash()
     
