@@ -7,7 +7,8 @@ from email.mime.text import MIMEText
 from email.mime.multipart import MIMEMultipart
 
 load_dotenv()
-
+splash = os.getenv("SPLASH")
+icon = os.getenv("ICON")
 
 
 
@@ -31,7 +32,7 @@ class Aplicacion(Toplevel):
         self.pwidth = round(self.winfo_screenwidth() // 2 - self.width // 2)
         self.pheight = round(self.winfo_screenheight() // 2 - self.height // 2)
         self.geometry("{}x{}+{}+{}".format(self.width, self.height, self.pwidth, self.pheight))
-        self.iconbitmap("/media/icon.png")
+        
 
         #widgets
 
@@ -170,7 +171,7 @@ def mostrar_ventana_splash():
     splash_root = Tk()
     splash_root.overrideredirect(True)
 
-    image_path = "media/splash.png"
+    image_path = splash
     image = PhotoImage(file=image_path)
     img_label = Label(splash_root, image=image)
     img_label.pack()
